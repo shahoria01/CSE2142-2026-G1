@@ -21,6 +21,16 @@ public class EmployeeManager {
         }
     }
 
+    // Method to search for an employee
+    private static boolean searchEmployee(String employeeName) throws IOException {
+        for (String employee : readEmployees()) {
+            if (employee.equals(employeeName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
 
         // Check arguments
@@ -33,8 +43,7 @@ public class EmployeeManager {
         if (args[0].equals("l")) {
             System.out.println("Loading data ...");
             try {
-                String[] employees = readEmployees();
-                for (String employee : employees) {
+                for (String employee : readEmployees()) {
                     System.out.println(employee);
                 }
             } catch (Exception exception) {
@@ -66,14 +75,10 @@ public class EmployeeManager {
         } else if (args[0].contains("?")) {
             System.out.println("Loading data ...");
             try {
-                String[] employees = readEmployees();
-                boolean isFound = false;
-
-                for (int i = 0; i < employees.length && !isFound; i++) {
-                    if (employees[i].equals(args[0].substring(1))) {
-                        System.out.println("Employee found!");
-                        isFound = true;
-                    }
+                if (searchEmployee(args[0].substring(1))) {
+                    System.out.println("Employee found!");
+                } else {
+                    System.out.println("Employee not found!");
                 }
             } catch (Exception exception) {
             }
