@@ -1,5 +1,4 @@
 
-//File Name EmployeeManager.java
 import java.io.*;
 import java.util.*;
 
@@ -9,7 +8,7 @@ public class EmployeeManager {
     private static String[] readEmployees() throws IOException {
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
-                        new FileInputStream("employees.txt")))) {
+                        new FileInputStream(Constants.EMPLOYEE_FILE)))) {
             String line = reader.readLine();
             return line.split(",");
         }
@@ -18,12 +17,13 @@ public class EmployeeManager {
     // Method to write employee data to file
     private static void writeEmployees(String[] employees) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(
-                new FileWriter("employees.txt"))) {
+                new FileWriter(Constants.EMPLOYEE_FILE))) {
             writer.write(String.join(",", employees));
         }
     }
 
     public static void main(String[] args) {
+
         // Check arguments
         if (args.length != 1) {
             System.out.println("Invalid number of arguments!");
@@ -58,7 +58,7 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
             try {
                 BufferedWriter writer = new BufferedWriter(
-                        new FileWriter("employees.txt", true));
+                        new FileWriter(Constants.EMPLOYEE_FILE, true));
                 String employeeName = args[0].substring(1);
                 writer.write(", " + employeeName);
                 writer.close();
