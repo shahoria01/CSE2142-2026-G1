@@ -88,19 +88,12 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
             try {
                 String[] employees = readEmployees();
-                boolean inWord = false;
-                int wordCount = 0;
 
-                for (char character : String.join(",", employees).toCharArray()) {
-                    if (character == ' ') {
-                        if (!inWord) {
-                            wordCount++;
-                            inWord = true;
-                        } else {
-                            inWord = false;
-                        }
-                    }
-                }
+                int wordCount = Arrays.stream(employees)
+                        .mapToInt(employee -> employee.trim().isEmpty()
+                                ? 0 : employee.trim().split("\\s+").length)
+                        .sum();
+
                 System.out.println(wordCount + " word(s) found "
                         + String.join(",", employees).length());
             } catch (Exception exception) {
