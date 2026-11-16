@@ -9,8 +9,7 @@ public class EmployeeManager {
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream(Constants.EMPLOYEE_FILE)))) {
-            String line = reader.readLine();
-            return line.split(",");
+            return reader.readLine().split(",");
         }
     }
 
@@ -48,8 +47,7 @@ public class EmployeeManager {
                 String[] employees = readEmployees();
                 System.out.println(String.join(",", employees));
                 Random random = new Random();
-                int randomIndex = random.nextInt(employees.length);
-                System.out.println(employees[randomIndex]);
+                System.out.println(employees[random.nextInt(employees.length)]);
             } catch (Exception exception) {
             }
             System.out.println("Data Loaded.");
@@ -59,8 +57,7 @@ public class EmployeeManager {
             try {
                 BufferedWriter writer = new BufferedWriter(
                         new FileWriter(Constants.EMPLOYEE_FILE, true));
-                String employeeName = args[0].substring(1);
-                writer.write(", " + employeeName);
+                writer.write(", " + args[0].substring(1));
                 writer.close();
             } catch (Exception exception) {
             }
@@ -71,10 +68,9 @@ public class EmployeeManager {
             try {
                 String[] employees = readEmployees();
                 boolean isFound = false;
-                String searchName = args[0].substring(1);
 
                 for (int i = 0; i < employees.length && !isFound; i++) {
-                    if (employees[i].equals(searchName)) {
+                    if (employees[i].equals(args[0].substring(1))) {
                         System.out.println("Employee found!");
                         isFound = true;
                     }
@@ -87,12 +83,10 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
             try {
                 String[] employees = readEmployees();
-                String line = String.join(",", employees);
-                char[] characters = line.toCharArray();
                 boolean inWord = false;
                 int wordCount = 0;
 
-                for (char character : characters) {
+                for (char character : String.join(",", employees).toCharArray()) {
                     if (character == ' ') {
                         if (!inWord) {
                             wordCount++;
@@ -102,7 +96,8 @@ public class EmployeeManager {
                         }
                     }
                 }
-                System.out.println(wordCount + " word(s) found " + characters.length);
+                System.out.println(wordCount + " word(s) found "
+                        + String.join(",", employees).length());
             } catch (Exception exception) {
             }
             System.out.println("Data Loaded.");
@@ -111,10 +106,9 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
             try {
                 String[] employees = readEmployees();
-                String employeeName = args[0].substring(1);
 
                 for (int i = 0; i < employees.length; i++) {
-                    if (employees[i].equals(employeeName)) {
+                    if (employees[i].equals(args[0].substring(1))) {
                         employees[i] = "Updated";
                     }
                 }
@@ -128,10 +122,9 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
             try {
                 String[] employees = readEmployees();
-                String employeeName = args[0].substring(1);
 
                 List<String> employeeList = new ArrayList<>(Arrays.asList(employees));
-                employeeList.remove(employeeName);
+                employeeList.remove(args[0].substring(1));
 
                 writeEmployees(employeeList.toArray(new String[0]));
             } catch (Exception exception) {
