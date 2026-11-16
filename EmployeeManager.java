@@ -33,10 +33,30 @@ public class EmployeeManager {
 
     public static void main(String[] args) {
 
-        // Check arguments
+        // Check number of arguments
         if (args.length != 1) {
             System.out.println("Invalid number of arguments!");
             System.out.println("Usage: java EmployeeManager <argument>");
+            return;
+        }
+
+        // Check for valid arguments
+        if (!args[0].equals("l") && !args[0].equals("s")
+                && !args[0].equals("c")
+                && !args[0].startsWith("+")
+                && !args[0].startsWith("?")
+                && !args[0].startsWith("u")
+                && !args[0].startsWith("d")) {
+            System.out.println("Invalid argument!");
+            System.out.println("Valid arguments: l, s, +name, ?name, c, uname, dname");
+            return;
+        }
+
+        // Check employee name for operations that require a name
+        if ((args[0].startsWith("+") || args[0].startsWith("?")
+                || args[0].startsWith("u") || args[0].startsWith("d"))
+                && args[0].length() == 1) {
+            System.out.println("Employee name is required!");
             return;
         }
 
@@ -61,18 +81,18 @@ public class EmployeeManager {
             }
             System.out.println("Data Loaded.");
 
-        } else if (args[0].contains("+")) {
+        } else if (args[0].startsWith("+")) {
             System.out.println("Loading data ...");
             try {
-                BufferedWriter writer = new BufferedWriter(
-                        new FileWriter(Constants.EMPLOYEE_FILE, true));
-                writer.write(", " + args[0].substring(1));
-                writer.close();
+                try (BufferedWriter writer = new BufferedWriter(
+                        new FileWriter(Constants.EMPLOYEE_FILE, true))) {
+                    writer.write(", " + args[0].substring(1));
+                }
             } catch (Exception exception) {
             }
             System.out.println("Data Loaded.");
 
-        } else if (args[0].contains("?")) {
+        } else if (args[0].startsWith("?")) {
             System.out.println("Loading data ...");
             try {
                 if (searchEmployee(args[0].substring(1))) {
@@ -84,7 +104,7 @@ public class EmployeeManager {
             }
             System.out.println("Data Loaded.");
 
-        } else if (args[0].contains("c")) {
+        } else if (args[0].equals("c")) {
             System.out.println("Loading data ...");
             try {
                 String[] employees = readEmployees();
@@ -100,7 +120,7 @@ public class EmployeeManager {
             }
             System.out.println("Data Loaded.");
 
-        } else if (args[0].contains("u")) {
+        } else if (args[0].startsWith("u")) {
             System.out.println("Loading data ...");
             try {
                 String[] employees = readEmployees();
@@ -116,7 +136,7 @@ public class EmployeeManager {
             }
             System.out.println("Data Updated.");
 
-        } else if (args[0].contains("d")) {
+        } else if (args[0].startsWith("d")) {
             System.out.println("Loading data ...");
             try {
                 String[] employees = readEmployees();
